@@ -6,14 +6,46 @@
 /*!*************************************************************!*\
   !*** ./apps/reservations/src/dto/create-reservation.dto.ts ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CreateReservationDto = void 0;
+const class_transformer_1 = __webpack_require__(/*! class-transformer */ "class-transformer");
+const class_validator_1 = __webpack_require__(/*! class-validator */ "class-validator");
 class CreateReservationDto {
 }
 exports.CreateReservationDto = CreateReservationDto;
+__decorate([
+    (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], CreateReservationDto.prototype, "startDate", void 0);
+__decorate([
+    (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], CreateReservationDto.prototype, "endDate", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateReservationDto.prototype, "placeId", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateReservationDto.prototype, "onvoiceId", void 0);
 
 
 /***/ }),
@@ -203,6 +235,7 @@ const reservations_controller_1 = __webpack_require__(/*! ./reservations.control
 const common_2 = __webpack_require__(/*! @app/common */ "./libs/common/src/index.ts");
 const reservations_repository_1 = __webpack_require__(/*! ./reservations.repository */ "./apps/reservations/src/reservations.repository.ts");
 const reservation_schema_1 = __webpack_require__(/*! ./models/reservation.schema */ "./apps/reservations/src/models/reservation.schema.ts");
+const common_3 = __webpack_require__(/*! @app/common */ "./libs/common/src/index.ts");
 let ReservationsModule = class ReservationsModule {
 };
 exports.ReservationsModule = ReservationsModule;
@@ -213,6 +246,7 @@ exports.ReservationsModule = ReservationsModule = __decorate([
             common_2.DatabaseModule.forFeature([
                 { name: reservation_schema_1.ReservationDocument.name, schema: reservation_schema_1.ReservationSchema }
             ]),
+            common_3.LoggerModule,
         ],
         controllers: [reservations_controller_1.ReservationsController],
         providers: [reservations_service_1.ReservationsService, reservations_repository_1.ReservationsRepository],
@@ -466,7 +500,7 @@ exports.DatabaseModule = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const mongoose_1 = __webpack_require__(/*! @nestjs/mongoose */ "@nestjs/mongoose");
-const config_module_1 = __webpack_require__(/*! ../config/config.module */ "./libs/common/src/config/config.module.ts");
+const config_module_1 = __webpack_require__(/*! @app/common/config/config.module */ "./libs/common/src/config/config.module.ts");
 let DatabaseModule = class DatabaseModule {
     static forFeature(models) {
         return mongoose_1.MongooseModule.forFeature(models);
@@ -542,6 +576,74 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(/*! ./database */ "./libs/common/src/database/index.ts"), exports);
+__exportStar(__webpack_require__(/*! ./logger */ "./libs/common/src/logger/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./libs/common/src/logger/index.ts":
+/*!*****************************************!*\
+  !*** ./libs/common/src/logger/index.ts ***!
+  \*****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./logger.module */ "./libs/common/src/logger/logger.module.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./libs/common/src/logger/logger.module.ts":
+/*!*************************************************!*\
+  !*** ./libs/common/src/logger/logger.module.ts ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LoggerModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const nestjs_pino_1 = __webpack_require__(/*! nestjs-pino */ "nestjs-pino");
+let LoggerModule = class LoggerModule {
+};
+exports.LoggerModule = LoggerModule;
+exports.LoggerModule = LoggerModule = __decorate([
+    (0, common_1.Module)({
+        imports: [
+            nestjs_pino_1.LoggerModule.forRoot({
+                pinoHttp: {
+                    transport: {
+                        target: 'pino-pretty',
+                        options: {
+                            singleLine: true,
+                        },
+                    },
+                },
+            }),
+        ],
+    })
+], LoggerModule);
 
 
 /***/ }),
@@ -596,6 +698,26 @@ module.exports = require("@nestjs/mongoose");
 
 /***/ }),
 
+/***/ "class-transformer":
+/*!************************************!*\
+  !*** external "class-transformer" ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = require("class-transformer");
+
+/***/ }),
+
+/***/ "class-validator":
+/*!**********************************!*\
+  !*** external "class-validator" ***!
+  \**********************************/
+/***/ ((module) => {
+
+module.exports = require("class-validator");
+
+/***/ }),
+
 /***/ "joi":
 /*!**********************!*\
   !*** external "joi" ***!
@@ -613,6 +735,16 @@ module.exports = require("joi");
 /***/ ((module) => {
 
 module.exports = require("mongoose");
+
+/***/ }),
+
+/***/ "nestjs-pino":
+/*!******************************!*\
+  !*** external "nestjs-pino" ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = require("nestjs-pino");
 
 /***/ })
 
@@ -654,8 +786,12 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
 const reservations_module_1 = __webpack_require__(/*! ./reservations.module */ "./apps/reservations/src/reservations.module.ts");
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const nestjs_pino_1 = __webpack_require__(/*! nestjs-pino */ "nestjs-pino");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(reservations_module_1.ReservationsModule);
+    app.useGlobalPipes(new common_1.ValidationPipe({ whitelist: true }));
+    app.useLogger(app.get(nestjs_pino_1.Logger));
     await app.listen(3000);
 }
 bootstrap();
